@@ -1,0 +1,34 @@
+services:
+  server:
+    container_name: algo-board-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: runner
+    volumes:
+      - ./server:/app
+      - /build/node_modules
+    networks:
+      - Algo-Board
+    ports:
+      - "3000:3000"
+
+  client:
+    container_name: algo-board-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      target: runner
+    volumes:
+      - ./client:/app
+      - /build/node_modules
+    networks:
+      - Algo-Board
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+
+networks:
+  Algo-Board:
+    driver: bridge
